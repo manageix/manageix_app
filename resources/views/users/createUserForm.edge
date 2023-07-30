@@ -1,0 +1,29 @@
+@layout('layouts/default')
+@section('content')
+  <div class="page-header">
+    <div class="page-header-title">Create User</div>
+  </div>
+  <div class="page-content">
+  <form class="form" method="post" action="/users/create" class="space-y-2 block w-full">
+    <div>
+      <input class="input" type="text" name="username" placeholder="Username">
+    </div>
+    <div>
+      <input class="input" type="password" name="password" placeholder="Password">
+    </div>
+    <div>
+      <input class="input" type="text" name="email" placeholder="Email">
+    </div>
+    <div>
+      <input class="input" type="text" name="first_name" placeholder="First Name">
+    </div>
+    <div>
+      <input class="input" type="text" name="last_name" placeholder="Last Name">
+    </div>
+    <div class="flex justify-between">
+      <input class="btn btn-primary" type="submit" value="Create">
+      <a class="btn btn-danger" href="/users">Cancel</a>
+    </div>
+  </form>
+  </div>
+@endsection

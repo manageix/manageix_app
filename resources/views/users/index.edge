@@ -1,0 +1,36 @@
+@layout('layouts/default')
+@section('content')
+<div>
+  <div class="page-header flex justify-between">
+    <div class=" page-header-title">Users</div>
+    <div>
+      <a href="{{ route('/users/create') }}" class="btn btn-primary btn-sm">Create User</a>
+    </div>
+  </div>
+  {{--  if the users variable contains data print it below  --}}
+  <div class="page-content">
+    @if(users)
+    <table class="table w-full">
+      <thead class="table-header">
+        <tr>
+          <th class="table-cell-header table-header-cell-md">Email</th>
+          <th class="table-cell-header table-header-cell-md">Username</th>
+          <th class="table-cell-header table-header-cell-md">First Name</th>
+          <th class="table-cell-header table-header-cell-md">Last Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        @each(user in users)
+          <tr class="table-row table-row-md">
+            <td class="table-cell table-cell-md"><a class="link" href="/users/{{user.id}}">{{user.email}}</a></td>
+            <td class="table-cell table-cell-md">{{user.username}}</td>
+            <td class="table-cell table-cell-md">{{user.first_name}}</td>
+            <td class="table-cell table-cell-md">{{user.last_name}}</td>
+          </tr>
+        @end
+      </tbody>
+    </table>
+    @endif
+  </div>
+</div> 
+@endsection

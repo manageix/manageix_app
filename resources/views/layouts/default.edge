@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdonisJS - A fully featured web framework for Node.js</title>
+  @entryPointStyles('app')
+  @entryPointScripts('app')
+</head>
+
+<body class="p-5 bg-gray-900 text-gray-300">
+  <header>
+    <nav>
+      <div class="font-bold text-3xl text-gray-600"><a href="/">ManageIX</a></div>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="grid grid-cols-12">
+      <div class="col-span-2">
+        @include('layouts/partials/_sidebar')
+      </div>
+      <div class="col-span-10">
+        @!section('content')
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
