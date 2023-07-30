@@ -32,4 +32,9 @@ export default class UsersController {
     await user.save()
     return response.redirect('/users')
   }
+
+  public async editUser({params}) {
+    const user = await User.find(params.id)
+    return await View.render('users/editUser', { user })
+  }
 }
