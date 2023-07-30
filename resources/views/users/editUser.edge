@@ -1,5 +1,7 @@
 @layout('layouts/default')
 @section('content')
+
+  
   <div class="page-header">
     <div class="page-header-title">Edit User: {{user.username}}</div>
   </div>
@@ -8,29 +10,138 @@
     <div>
       <label class="label">Username</label>
       <input class="input" type="text" name="username" placeholder="Username" value="{{user.username}}">
+      <div id="username-error" class="text-red-500"></div>
     </div>
     <div>
       <label class="label">Password</label>
       <input class="input block" type="password" name="password" placeholder="Password">
+      <div id="password-error" class="text-red-500"></div>
       <label class="label">Confirm Password</label>
       <input class="input block" type="password" name="confirm_password" placeholder="Password">
+      <div id="confirm-password-error" class="text-red-500"></div>
     </div>
     <div>
       <label class="label">Email</label>
       <input class="input" type="text" name="email" placeholder="Email" value="{{user.email}}">
+      <div id="email-error" class="text-red-500"></div>
     </div>
     <div>
       <label class="label">First Name</label>
       <input class="input" type="text" name="first_name" placeholder="First Name" value="{{user.first_name}}">
+      <div id="first_name-error"  class="text-red-500"></div>
     </div>
     <div>
       <label class="label">Last Name</label>
       <input class="input" type="text" name="last_name" placeholder="Last Name" value="{{user.last_name}}">
+      <div id="last_name-error" class="text-red-500"></div>
     </div>
     <div class="flex justify-between">
       <input class="btn btn-primary" type="submit" value="Create">
       <a class="btn btn-danger" href="/users">Cancel</a>
     </div>
   </form>
+  
   </div>
+  <div id="test"></div>
+  <script>
+    $(document).ready(function(){
+      // If the password and confirm password do not match, show an error and set the confirm password field to red
+      $('input[name="confirm_password"]').on('keyup', checkPasswordMatch)
+      $('input[name="password"]').on('keyup', checkPasswordMatch)
+      function checkPasswordMatch(){
+        if($('input[name="password"]').val() != $('input[name="confirm_password"]').val()){
+          $('#confirm-password-error').html('Passwords do not match');
+          $('input[name="confirm_password"]').addClass('border-red-500');
+        }else{
+          $('#confirm-password-error').html('');
+          $('input[name="confirm_password"]').removeClass('border-red-500');
+        }
+      }
+      //When form is submitted check if the passwords match and if they do not, prevent the form from submitting
+      $('form').on('submit', function(e){
+        if($('input[name="password"]').val() != $('input[name="confirm_password"]').val()){
+          e.preventDefault();
+          $('#confirm-password-error').html('Passwords do not match');
+        }
+      })
+
+      // When form is submitte check that all fields have a value, if they don't prevent the form from submitting, show and error and set the field to red
+      $('form').on('submit', function(e){
+        var error = false;
+        $('input').each(function(){
+          if($(this).val() == ''){
+            error = true;
+            $(this).addClass('border-red-500');
+            var name = $(this).attr('name');
+            $('#' + name + '-error').html('This field is required');
+          }
+        })
+        if(error){
+          e.preventDefault();
+        }
+      })
+
+      // When a user start typing in a field, remove the red border and error message, except for the password fields
+      $('input').on('keyup', function(){
+        if($(this).attr('name') != 'password' && $(this).attr('name') != 'confirm_password'){
+          $(this).removeClass('border-red-500');
+          var name = $(this).attr('name');
+          $('#' + name + '-error').html('');
+        }
+      })
+
+      // onkeyup Check the username is at least 8 characters long and does not contain any spaces. If it does, show an error and set the field to red
+      $('input[name="username"]').on('keyup', function(){
+        var username = $(this).val();
+        if(username.length < 5){
+          $(this).addClass('border-red-500');
+          $('#username-error').html('Username must be at least 8 characters long');
+        }else if(username.indexOf(' ') >= 0){
+          $(this).addClass('border-red-500');
+          $('#username-error').html('Username cannot contain spaces');
+        }else{
+          $(this).removeClass('border-red-500');
+          $('#username-error').html('');
+        }
+      })
+
+      // onkeyup Check the email is valid. If it is not, show an error and set the field to red
+
+
+      // onkeyup check the password is at least 8 characters long and contains at least one uppercase letter, one lowercase letter and one number. If it does not, show an error and set the field to red
+      
+      $('input[name="password"]').on('keyup', function() {
+        let password = $(this).val();
+        checkPasswordFormat(password);
+      })
+      $('form').on('submit', function(e) {
+        let password = $(this).val();
+        if(!checkPasswordFormat(password)){
+          e.preventDefault();
+        }
+      })
+
+      function checkPasswordFormat(password) {
+        if(password.length < 8 || !password.match(/[a-z]/g) || !password.match(/[A-Z]/g) || !password.match(/[0-9]/g) || !password.match(/[^a-zA-Z0-9]/g)){
+          $(this).addClass('border-red-500');
+          $('#password-error').html('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character');
+          return false
+        } else {
+          $(this).removeClass('border-red-500');
+          $('#password-error').html('');
+          return true
+        }
+      }
+
+     
+
+
+
+      
+
+    })
+   
+  </script>
+
 @endsection
+
